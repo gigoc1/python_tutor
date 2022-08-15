@@ -8,4 +8,7 @@ pip install 패키지==버전: 특정 버전의 패키지를 설치(예: pip ins
 pip list 또는 pip freeze: 패키지 목록 출력
 
 pip uninstall 패키지: 패키지 삭제
+모든 패키지 삭제
+ - pip freeze > name.txt
+ - pip uninstall -r name.txt
 """
