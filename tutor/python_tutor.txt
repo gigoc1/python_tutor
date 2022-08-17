@@ -1,0 +1,5 @@
+1. 32 bit 가상환경 설치방법
+  1)아나콘다 설치 --> conda prompt에서 "set CONDA_FORCE_32BIT=1", "conda create -n 가상환경이름(kiwoom) python=3.9"
+  2) activate 가상환경이름(kiwoom)
+  3) 가상환경에서 패키지 설치시에는 "set CONDA_FORCE_32BIT=0" 이후에 "conda install pyqt"
+  4) "PyQt5" 설치는 "python -m pip list"에서 확인 후, 없으면 "python -m pip install pyqt5"로 설치
