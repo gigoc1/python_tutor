@@ -3,3 +3,13 @@
   2) activate 가상환경이름(kiwoom) -- > prompt에서 "code" 입력하여 VScode 실행 --> 인터프리터를 가상환경으로 선택
   3) 가상환경에서 패키지 설치시에는 "set CONDA_FORCE_32BIT=0" 이후에 "conda install pyqt"
   4) "PyQt5" 설치는 "python -m pip list"에서 확인 후, 없으면 "python -m pip install pyqt5"로 설치
+2. pip 명령어
+pip search 패키지: 패키지 검색
+pip install 패키지==버전: 특정 버전의 패키지를 설치(예: pip install requests==2.9.0)
+pip list 또는 pip freeze: 패키지 목록 출력
+pip uninstall 패키지: 패키지 삭제
+모든 패키지 삭제(설치)
+ - pip freeze > name.txt
+ - pip uninstall(install) -r name.txt
+3. 설치된 파이선 리스트 확인하기
+ -cmd)py -0p
