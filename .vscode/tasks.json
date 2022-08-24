@@ -15,6 +15,7 @@
                 "panel": "new"
             },
             "options": {
+                "cwd": "${fileDirname}",
                 "env": {
                     "PYTHONIOENCODING": "UTF-8"
                 }
