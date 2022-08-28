@@ -7,7 +7,7 @@ jongmok_code = ["069410", "299900","007690","145990","005380","361610","101170",
 jongmok_name = ["Ntells", "Wisiwig","Gukdo","Samyang","HMC","SKIETech","Woorim","LGenergy","Seonam","POSCOchemical"]
 index=0
 for code in jongmok_code:
-    gs = web.DataReader(code, "naver", "2021-05-01")
+    gs = web.DataReader(code, "naver", "2022-05-01")
     gs = gs.apply(to_numeric) #naver는 데이터가 string이여서 numeric로 변경 필요. yahoo는 필요없음
 # print(gs.tail())
     ma5=gs['Close'].rolling(window=5).mean()  #yahoo는 'Adj Close', naver는 'Close'

@@ -2,5 +2,6 @@
     "editor.formatOnSave": false,
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
     "explorer.copyRelativePathSeparator": "auto",
-    "C_Cpp.preferredPathSeparator": "Backslash"
+    "C_Cpp.preferredPathSeparator": "Backslash",
+    "extensions.ignoreRecommendations": true
 }

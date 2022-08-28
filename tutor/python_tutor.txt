@@ -11,6 +11,9 @@ pip uninstall 패키지: 패키지 삭제
 모든 패키지 삭제(설치)
  - pip freeze > name.txt
  - pip uninstall(install) -r name.txt
+패키지 업그레이드
+ -pip install --upgrade numpy
+ -pip install --upgrade pip
 3. 설치된 파이선 리스트 확인하기
  -cmd)py -0p
 4. vscode에서 cwd 옵션 설정하기(파일 열기/쓰기 시 필요)
