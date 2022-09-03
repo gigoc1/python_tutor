@@ -2,7 +2,7 @@
 # update: 키의 값 수정, 키가 없으면 키-값 쌍 추가
 x = {'a': 10, 'b': 20, 'c': 30, 'd': 40}
 print(x.setdefault('e'))
-print(x)
+print(0 if (x.get('f')==None) else x.get('f'))
 
 x.update(a=90) #update(키=값)은 키가 문자열일때만 사용 가능
 print(x)

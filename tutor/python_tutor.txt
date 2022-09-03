@@ -17,7 +17,10 @@ pip uninstall 패키지: 패키지 삭제
 3. 설치된 파이선 리스트 확인하기
  -cmd)py -0p
 4. vscode에서 cwd 옵션 설정하기(파일 열기/쓰기 시 필요)
- - "options": {"cwd": "${fileDirname}"}
+ - tasks.json
+   - "options": {"cwd": "${fileDirname}"}
+ - launch.json
+   -"cwd": "${fileDirname}"} //configuration에 추가
 5. QtDesigner 설치
  - pip install pyqt5-tools 입력
  - 파이썬 설치경로/Lib/site-packages/qt5_applications/Qt/bin/designer.exe
