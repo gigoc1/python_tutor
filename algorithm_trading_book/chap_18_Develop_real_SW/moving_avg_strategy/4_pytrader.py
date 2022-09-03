@@ -67,7 +67,7 @@ class MyWindow(QMainWindow, form_class):
     def timeout3(self):
         stock_keep={} #{종목명:수량}
         stock_row_count=self.tableWidget_2.rowCount()
-        if stock_row_count > 0:
+        if stock_row_count > 0: #조회 종목 없을때 에러 방지, 테이블 기본 행 갯수는 0으로 셋팅(QtDesigner)
             for index in range(0,stock_row_count):
                 stock_keep[self.tableWidget_2.item(index,0).text()]=self.tableWidget_2.item(index,1).text()
         
@@ -79,19 +79,14 @@ class MyWindow(QMainWindow, form_class):
                         +";"+str(criteria_list[code][1])+"\n")
         f.close()
 
-        # f = open("buy_list_2.txt", 'rt', encoding='UTF-8')
-        # buy_list=f.readlines()
-        # for buy_row in buy_list:
-        #     split_row_data=buy_row.split(';')
-        #     if (split_row_data[5]=="true") and 
-
-
-        # market_start_time = QTime(9, 0, 0)
-        # current_time = QTime.currentTime()
-
-        # if current_time > market_start_time and self.trade_stocks_done is False:
-        #     self.trade_stocks()
-        #     self.trade_stocks_done = True
+        f = open("buy_list_2.txt", 'rt', encoding='UTF-8')
+        buy_list=f.readlines()
+        for buy_row in buy_list:
+            split_row_data=buy_row.split(';')
+            if (int(split_row_data[3]) > 0) and (split_row_data[5] =="True"): # 매도 조건 만족
+                self.trade_stocks()
+            if (int(split_row_data[3]) == 0) and (split_row_data[6] =="True"): # 매수 조건 만족
+                self.trade_stocks()
 
     def code_changed(self):
         code = self.lineEdit.text()
@@ -154,45 +149,28 @@ class MyWindow(QMainWindow, form_class):
         self.tableWidget_2.resizeRowsToContents()
 
     def load_buy_sell_list(self):
-        f = open("buy_list.txt", 'rt', encoding='UTF-8')
+        f = open("buy_list_2.txt", 'rt', encoding='UTF-8')
         buy_list = f.readlines()
         f.close()
 
-        f = open("sell_list.txt", 'rt', encoding='UTF-8')
-        sell_list = f.readlines()
-        f.close()
-
-        row_count = len(buy_list) + len(sell_list)
+        row_count = len(buy_list)
         self.tableWidget_3.setRowCount(row_count)
 
         # buy list
         for j in range(len(buy_list)):
             row_data = buy_list[j]
             split_row_data = row_data.split(';')
-            split_row_data[1] = self.kiwoom.get_master_code_name(split_row_data[1].rsplit())
-
             for i in range(len(split_row_data)):
                 item = QTableWidgetItem(split_row_data[i].rstrip())
                 item.setTextAlignment(Qt.AlignVCenter | Qt.AlignCenter)
                 self.tableWidget_3.setItem(j, i, item)
-
-        # sell list
-        for j in range(len(sell_list)):
-            row_data = sell_list[j]
-            split_row_data = row_data.split(';')
-            split_row_data[1] = self.kiwoom.get_master_code_name(split_row_data[1].rstrip())
-
-            for i in range(len(split_row_data)):
-                item = QTableWidgetItem(split_row_data[i].rstrip())
-                item.setTextAlignment(Qt.AlignVCenter | Qt.AlignCenter)
-                self.tableWidget_3.setItem(len(buy_list) + j, i, item)        
 
         self.tableWidget_3.resizeRowsToContents()
 
     def trade_stocks(self):
         hoga_lookup = {'지정가': "00", '시장가': "03"}
 
-        f = open("buy_list.txt", 'rt', encoding='UTF-8')
+        f = open("buy_list_2.txt", 'rt', encoding='UTF-8')
         buy_list = f.readlines()
         f.close()
 
@@ -202,7 +180,7 @@ class MyWindow(QMainWindow, form_class):
 
         account = self.comboBox.currentText()
 
-        # buy list
+        # sell/buy list
         for row_data in buy_list:
             split_row_data = row_data.split(';')
             hoga = split_row_data[2]
@@ -210,39 +188,11 @@ class MyWindow(QMainWindow, form_class):
             num = split_row_data[3]
             price = split_row_data[4]
 
-            if split_row_data[-1].rstrip() == '매수전':
+            if split_row_data[6] == "True":
                 self.kiwoom.send_order("send_order_req", "0101", account, 1, code, num, price, hoga_lookup[hoga], "")
 
-        # sell list
-        for row_data in sell_list:
-            split_row_data = row_data.split(';')
-            hoga = split_row_data[2]
-            code = split_row_data[1]
-            num = split_row_data[3]
-            price = split_row_data[4]
-
-            if split_row_data[-1].rstrip() == '매도전':
+            if split_row_data[5] == "True":
                 self.kiwoom.send_order("send_order_req", "0101", account, 2, code, num, price, hoga_lookup[hoga], "")
-
-        # buy list
-        for i, row_data in enumerate(buy_list):
-            buy_list[i] = buy_list[i].replace("매수전", "주문완료")
-
-        # file update
-        f = open("buy_list.txt", 'wt', encoding='UTF-8')
-        for row_data in buy_list:
-            f.write(row_data)
-        f.close()
-
-        # sell list
-        for i, row_data in enumerate(sell_list):
-            sell_list[i] = sell_list[i].replace("매도전", "주문완료")
-
-        # file update
-        f = open("sell_list.txt", 'wt', encoding='UTF-8')
-        for row_data in sell_list:
-            f.write(row_data)
-        f.close()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
