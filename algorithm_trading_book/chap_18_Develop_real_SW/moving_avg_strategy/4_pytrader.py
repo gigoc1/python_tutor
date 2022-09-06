@@ -27,7 +27,7 @@ class MyWindow(QMainWindow, form_class):
         self.timer2.timeout.connect(self.timeout2)
 
         self.timer3 = QTimer(self)
-        self.timer3.start(1000*10)
+        self.timer3.start(1000*60*10)
         self.timer3.timeout.connect(self.timeout3)
 
         accouns_num = int(self.kiwoom.get_login_info("ACCOUNT_CNT"))
@@ -194,11 +194,9 @@ class MyWindow(QMainWindow, form_class):
             price = split_row_data[4]
 
             if split_row_data[6] == 'True':
-                print("buy_on")
                 self.kiwoom.send_order("send_order_req", "0101", account, 1, code, num, price, hoga_lookup[hoga], "")
 
             if split_row_data[5] == 'True':
-                print("sell_on")
                 self.kiwoom.send_order("send_order_req", "0101", account, 2, code, num, price, hoga_lookup[hoga], "")
 
 if __name__ == "__main__":
