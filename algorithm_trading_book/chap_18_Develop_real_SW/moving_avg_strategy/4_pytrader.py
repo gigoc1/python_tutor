@@ -88,14 +88,10 @@ class MyWindow(QMainWindow, form_class):
         for buy_row in buy_list:
             buy_row=buy_row.strip('\n')  # 라인 끝 '\n' 제거
             split_row_data=buy_row.split(';')
-            if split_row_data[0]=="국도화학":
-                print(int(split_row_data[3]))
-                print(split_row_data[6])
+            
             if int(split_row_data[3]) > 0 and split_row_data[5] =='True': # 매도 조건 만족
-                print('1-on')
                 self.trade_stocks()
             if int(split_row_data[3]) == 0 and split_row_data[6] =='True': # 매수 조건 만족
-                print('2-on')
                 self.trade_stocks()
 
         self.load_buy_sell_list()
@@ -196,7 +192,6 @@ class MyWindow(QMainWindow, form_class):
             code = split_row_data[1]
             num = split_row_data[3]
             price = split_row_data[4]
-            # print(split_row_data[0]+split_row_data[1]+split_row_data[2]+split_row_data[3]+split_row_data[4]+split_row_data[5]+split_row_data[6])
 
             if split_row_data[6] == 'True':
                 print("buy_on")
