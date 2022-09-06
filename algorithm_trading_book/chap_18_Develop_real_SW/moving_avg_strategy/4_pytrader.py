@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import uic
 from Kiwoom import *
-from moving_avg import criteria_list
+from moving_avg import moving_avg
 
 form_class = uic.loadUiType("pytrader.ui")[0]
 
@@ -26,7 +26,7 @@ class MyWindow(QMainWindow, form_class):
         self.timer2.timeout.connect(self.timeout2)
 
         self.timer3 = QTimer(self)
-        self.timer3.start(1000*10)
+        self.timer3.start(1000*60)
         self.timer3.timeout.connect(self.timeout3)
 
         accouns_num = int(self.kiwoom.get_login_info("ACCOUNT_CNT"))
@@ -71,6 +71,8 @@ class MyWindow(QMainWindow, form_class):
             for index in range(0,stock_row_count):
                 stock_keep[self.tableWidget_2.item(index,0).text()]=self.tableWidget_2.item(index,1).text()
         
+        criteria_list=moving_avg()
+        
         f = open("buy_list_2.txt", 'wt', encoding='UTF-8')
         for code in criteria_list:
             name = self.kiwoom.get_master_code_name(code)
@@ -87,6 +89,9 @@ class MyWindow(QMainWindow, form_class):
                 self.trade_stocks()
             if (int(split_row_data[3]) == 0) and (split_row_data[6] =="True"): # 매수 조건 만족
                 self.trade_stocks()
+        f.close()
+
+        self.load_buy_sell_list()
 
     def code_changed(self):
         code = self.lineEdit.text()
@@ -172,10 +177,6 @@ class MyWindow(QMainWindow, form_class):
 
         f = open("buy_list_2.txt", 'rt', encoding='UTF-8')
         buy_list = f.readlines()
-        f.close()
-
-        f = open("sell_list.txt", 'rt', encoding='UTF-8')
-        sell_list = f.readlines()
         f.close()
 
         account = self.comboBox.currentText()

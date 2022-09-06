@@ -1,7 +1,7 @@
 import pandas as pd
 import pandas_datareader.data as web
 from pandas import to_numeric
-index=0
+index=2
 jongmok_code = ["069410", "299900","007690","145990","005380","361610","101170","373220","294630"]
 jongmok_name = ["Ntells", "Wisiwig","Gukdo","Samyang","HMC","SKIETech","Woorim","LGenergy","Seonam"]
 gs = web.DataReader(jongmok_code[index], "naver", "2022-01-01")
