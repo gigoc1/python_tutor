@@ -1,3 +1,4 @@
+from posixpath import split
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -26,7 +27,7 @@ class MyWindow(QMainWindow, form_class):
         self.timer2.timeout.connect(self.timeout2)
 
         self.timer3 = QTimer(self)
-        self.timer3.start(1000*60)
+        self.timer3.start(1000*10)
         self.timer3.timeout.connect(self.timeout3)
 
         accouns_num = int(self.kiwoom.get_login_info("ACCOUNT_CNT"))
@@ -42,12 +43,12 @@ class MyWindow(QMainWindow, form_class):
         self.load_buy_sell_list()
 
     def timeout(self):
-        market_start_time = QTime(9, 0, 0)
+        # market_start_time = QTime(9, 0, 0)
         current_time = QTime.currentTime()
 
-        if current_time > market_start_time and self.trade_stocks_done is False:
-            self.trade_stocks()
-            self.trade_stocks_done = True
+        # if current_time > market_start_time and self.trade_stocks_done is False:
+        #     self.trade_stocks()
+        #     self.trade_stocks_done = True
 
         text_time = current_time.toString("hh:mm:ss")
         time_msg = "현재시간: " + text_time
@@ -83,13 +84,19 @@ class MyWindow(QMainWindow, form_class):
 
         f = open("buy_list_2.txt", 'rt', encoding='UTF-8')
         buy_list=f.readlines()
-        for buy_row in buy_list:
-            split_row_data=buy_row.split(';')
-            if (int(split_row_data[3]) > 0) and (split_row_data[5] =="True"): # 매도 조건 만족
-                self.trade_stocks()
-            if (int(split_row_data[3]) == 0) and (split_row_data[6] =="True"): # 매수 조건 만족
-                self.trade_stocks()
         f.close()
+        for buy_row in buy_list:
+            buy_row=buy_row.strip('\n')  # 라인 끝 '\n' 제거
+            split_row_data=buy_row.split(';')
+            if split_row_data[0]=="국도화학":
+                print(int(split_row_data[3]))
+                print(split_row_data[6])
+            if int(split_row_data[3]) > 0 and split_row_data[5] =='True': # 매도 조건 만족
+                print('1-on')
+                self.trade_stocks()
+            if int(split_row_data[3]) == 0 and split_row_data[6] =='True': # 매수 조건 만족
+                print('2-on')
+                self.trade_stocks()
 
         self.load_buy_sell_list()
 
@@ -183,16 +190,20 @@ class MyWindow(QMainWindow, form_class):
 
         # sell/buy list
         for row_data in buy_list:
+            row_data=row_data.strip('\n')  # 열 마지막에 '\n'을 삭제해야 'True'가 됨(그렇지 않으면 'True\n'과 같음)
             split_row_data = row_data.split(';')
             hoga = split_row_data[2]
             code = split_row_data[1]
             num = split_row_data[3]
             price = split_row_data[4]
+            # print(split_row_data[0]+split_row_data[1]+split_row_data[2]+split_row_data[3]+split_row_data[4]+split_row_data[5]+split_row_data[6])
 
-            if split_row_data[6] == "True":
+            if split_row_data[6] == 'True':
+                print("buy_on")
                 self.kiwoom.send_order("send_order_req", "0101", account, 1, code, num, price, hoga_lookup[hoga], "")
 
-            if split_row_data[5] == "True":
+            if split_row_data[5] == 'True':
+                print("sell_on")
                 self.kiwoom.send_order("send_order_req", "0101", account, 2, code, num, price, hoga_lookup[hoga], "")
 
 if __name__ == "__main__":

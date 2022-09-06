@@ -21,7 +21,7 @@ def moving_avg():
         criteria_list[code]=[sell_on,buy_on]
     return criteria_list    
 
-print(criteria_list)
+# print(criteria_list)
 # print(criteria_list[jongmok_code[0]][0])
 # print(gs['Volume']!=0), 공휴일(거래량=0) 데이터가 원본에 없어서 코드는 무의미 함
 
