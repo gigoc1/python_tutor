@@ -27,7 +27,7 @@ class MyWindow(QMainWindow, form_class):
         self.timer2.timeout.connect(self.timeout2)
 
         self.timer3 = QTimer(self)
-        self.timer3.start(1000*60*10)
+        self.timer3.start(1000*10)
         self.timer3.timeout.connect(self.timeout3)
 
         accouns_num = int(self.kiwoom.get_login_info("ACCOUNT_CNT"))

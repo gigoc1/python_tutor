@@ -1,9 +1,10 @@
+import sys
 import pandas as pd
 import pandas_datareader.data as web
 from pandas import to_numeric
-index=2
-jongmok_code = ["069410", "299900","007690","145990","005380","361610","101170","373220","294630"]
-jongmok_name = ["Ntells", "Wisiwig","Gukdo","Samyang","HMC","SKIETech","Woorim","LGenergy","Seonam"]
+index=int(sys.argv[1])
+jongmok_code = ["069410", "299900","007690","145990","005380","361610","101170","373220","294630","005930"]
+jongmok_name = ["Ntells", "Wisiwig","Gukdo","Samyang","HMC","SKIETech","Woorim","LGenergy","Seonam","SEC"]
 gs = web.DataReader(jongmok_code[index], "naver", "2022-01-01")
 gs = gs.apply(to_numeric) #naver는 데이터가 string이여서 numeric로 변경 필요. yahoo는 필요없음
 # print(gs.tail())

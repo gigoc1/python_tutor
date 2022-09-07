@@ -25,3 +25,9 @@ pip uninstall 패키지: 패키지 삭제
  - pip install pyqt5-tools 입력
  - 파이썬 설치경로/Lib/site-packages/qt5_applications/Qt/bin/designer.exe
  - https://oceancoding.blogspot.com/2022/02/qt-designer.html
+6. 파이썬 명령행 인자 받기
+ - import sys
+   index = sys.argv[1]
+ - argv[0]: 실행하는 스크립트 경로
+ - argv[1]: 첫번째 인자
+ -예) py 1.py 2 --> argv[0]: 1.py, argv[1]: 2

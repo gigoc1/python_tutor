@@ -3,8 +3,10 @@ import pandas_datareader.data as web
 from pandas import to_numeric
 # import matplotlib.pyplot as plt
 
-jongmok_code = ["069410", "299900","007690","145990","005380","361610","101170","373220","294630","003670"]
-jongmok_name = ["Ntells", "Wisiwig","Gukdo","Samyang","HMC","SKIETech","Woorim","LGenergy","Seonam","POSCOchemical"]
+jongmok_code = ["069410", "299900","007690","145990","005380","361610","101170","373220","294630","005930",
+                "068270", "010120", "024880", "001440", "352820"]
+jongmok_name = ["Ntells", "Wisiwig","Gukdo","Samyang","HMC","SKIETech","Woorim","LGenergy","Seonam","SEC",
+                "Seltrion","LSElec", "KPF", "DAEHAN_Wire","HIVE"]
 criteria_list={}
 # index=0
 def moving_avg():
@@ -14,8 +16,8 @@ def moving_avg():
 
         ma5=gs['Close'].rolling(window=5).mean()  #yahoo는 'Adj Close', naver는 'Close'
         ma20=gs['Close'].rolling(window=20).mean()
-        ma60=gs['Close'].rolling(window=60).mean()
-        ma120=gs['Close'].rolling(window=120).mean()
+        # ma60=gs['Close'].rolling(window=60).mean()
+        # ma120=gs['Close'].rolling(window=120).mean()
         sell_on=(ma5[-2]>=ma20[-2]) and (ma5[-1]<ma20[-1])
         buy_on=(ma5[-2]<=ma20[-2]) and (ma5[-1]>ma20[-1])
         criteria_list[code]=[sell_on,buy_on]
