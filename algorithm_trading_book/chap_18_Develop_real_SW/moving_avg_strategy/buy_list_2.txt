@@ -10,6 +10,8 @@ LG에너지솔루션;373220;시장가;0;0;False;False
 삼성전자;005930;시장가;0;0;False;False
 셀트리온;068270;시장가;0;0;False;False
 LS ELECTRIC;010120;시장가;0;0;False;False
-케이피에프;024880;시장가;0;0;False;False
+케이피에프;024880;시장가;10;0;False;True
 대한전선;001440;시장가;0;0;False;False
 하이브;352820;시장가;0;0;False;False
+자이언트스텝;289220;시장가;0;0;False;False
+두산에너빌리티;034020;시장가;0;0;False;False

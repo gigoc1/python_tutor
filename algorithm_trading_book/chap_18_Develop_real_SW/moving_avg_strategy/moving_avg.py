@@ -4,9 +4,9 @@ from pandas import to_numeric
 # import matplotlib.pyplot as plt
 
 jongmok_code = ["069410", "299900","007690","145990","005380","361610","101170","373220","294630","005930",
-                "068270", "010120", "024880", "001440", "352820"]
+                "068270", "010120", "024880", "001440", "352820", "289220","034020"]
 jongmok_name = ["Ntells", "Wisiwig","Gukdo","Samyang","HMC","SKIETech","Woorim","LGenergy","Seonam","SEC",
-                "Seltrion","LSElec", "KPF", "DAEHAN_Wire","HIVE"]
+                "Seltrion","LSElec", "KPF", "DAEHAN_Wire","HIVE","GiantStep","DoosanEner"]
 criteria_list={}
 # index=0
 def moving_avg():

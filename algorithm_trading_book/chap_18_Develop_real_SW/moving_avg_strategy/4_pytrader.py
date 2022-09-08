@@ -92,6 +92,7 @@ class MyWindow(QMainWindow, form_class):
             if int(split_row_data[3]) > 0 and split_row_data[5] =='True': # 매도 조건 만족
                 self.trade_stocks()
             if int(split_row_data[3]) == 0 and split_row_data[6] =='True': # 매수 조건 만족
+                print("buy_on")
                 self.trade_stocks()
 
         self.load_buy_sell_list()
@@ -194,6 +195,7 @@ class MyWindow(QMainWindow, form_class):
             price = split_row_data[4]
 
             if split_row_data[6] == 'True':
+                num=10
                 self.kiwoom.send_order("send_order_req", "0101", account, 1, code, num, price, hoga_lookup[hoga], "")
 
             if split_row_data[5] == 'True':
