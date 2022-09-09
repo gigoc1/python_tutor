@@ -31,7 +31,5 @@ def moving_avg():
         sell_on=(ma5[-2]>=ma20[-2]) and (ma5[-1]<ma20[-1])
         buy_on=(ma5[-2]<=ma20[-2]) and (ma5[-1]>ma20[-1])
         if sell_on or buy_on:
-            criteria_list[code]=[sell_on,buy_on]
-    return criteria_list    
-print(criteria_list)
-
+            criteria_list[code]=[sell_on,buy_on, gs['Close'][-1]]
+    return criteria_list

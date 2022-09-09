@@ -78,7 +78,7 @@ class MyWindow(QMainWindow, form_class):
         for code in criteria_list:
             name = self.kiwoom.get_master_code_name(code)
             number=0 if (stock_keep.get(name)==None) else stock_keep.get(name)
-            f.writelines(name+";"+code+";시장가;"+str(number)+";0;"+str(criteria_list[code][0])
+            f.writelines(name+";"+code+";시장가;"+str(number)+";"+str(criteria_list[code][2])+";"+str(criteria_list[code][0])
                         +";"+str(criteria_list[code][1])+"\n")
         f.close()
 
