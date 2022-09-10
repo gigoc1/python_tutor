@@ -33,3 +33,7 @@ pip uninstall 패키지: 패키지 삭제
  -예) py 1.py 2 --> argv[0]: 1.py, argv[1]: 2
 7. DataFrame 합치기
  - "https://yganalyst.github.io/data_handling/Pd_12/"
+8. 숫자 vs 글자 판별(https://cotak.tistory.com/137)
+ - isdecimal(), isdigit(), isnumeric()
+ - 예) s='28212', print(s.isdigit()) #True
+ - 

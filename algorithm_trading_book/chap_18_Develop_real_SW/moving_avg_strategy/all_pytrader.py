@@ -27,7 +27,7 @@ class MyWindow(QMainWindow, form_class):
         self.timer2.timeout.connect(self.timeout2)
 
         self.timer3 = QTimer(self)
-        self.timer3.start(1000*60*5)
+        self.timer3.start(1000*60*10)
         self.timer3.timeout.connect(self.timeout3)
 
         accouns_num = int(self.kiwoom.get_login_info("ACCOUNT_CNT"))
@@ -82,19 +82,7 @@ class MyWindow(QMainWindow, form_class):
                         +";"+str(criteria_list[code][1])+"\n")
         f.close()
 
-        f = open("buy_list_2.txt", 'rt', encoding='UTF-8')
-        buy_list=f.readlines()
-        f.close()
-        for buy_row in buy_list:
-            buy_row=buy_row.strip('\n')  # 라인 끝 '\n' 제거
-            split_row_data=buy_row.split(';')
-            
-            if int(split_row_data[3]) > 0 and split_row_data[5] =='True': # 매도 조건 만족
-                self.trade_stocks()
-            if int(split_row_data[3]) == 0 and split_row_data[6] =='True': # 매수 조건 만족
-                print("buy_on")
-                self.trade_stocks()
-
+        self.trade_stocks()
         self.load_buy_sell_list()
 
     def code_changed(self):
@@ -186,7 +174,7 @@ class MyWindow(QMainWindow, form_class):
         account = self.comboBox.currentText()
 
         # sell/buy list
-        for row_data in buy_list:
+        for index , row_data in enumerate(buy_list):
             row_data=row_data.strip('\n')  # 열 마지막에 '\n'을 삭제해야 'True'가 됨(그렇지 않으면 'True\n'과 같음)
             split_row_data = row_data.split(';')
             hoga = split_row_data[2]
@@ -194,12 +182,14 @@ class MyWindow(QMainWindow, form_class):
             num = split_row_data[3]
             price = split_row_data[4]
 
-            if split_row_data[6] == 'True':
-                num=10
-                self.kiwoom.send_order("send_order_req", "0101", account, 1, code, num, price, hoga_lookup[hoga], "")
+            if int(split_row_data[3]) == 0 and split_row_data[6] =='True': # 매수 조건 만족
+                # num=10  일정 종목당 수량 매수
+                num=str(int(500000/int(split_row_data[4])))  #일정 종목당 금액 매수
+                print(num+":"+str(index))
+                self.kiwoom.send_order("send_order_req", "0101", account, 1, code, num, price, hoga_lookup[hoga], "")  #매수
 
-            if split_row_data[5] == 'True':
-                self.kiwoom.send_order("send_order_req", "0101", account, 2, code, num, price, hoga_lookup[hoga], "")
+            if int(split_row_data[3]) > 0 and split_row_data[5] =='True': # 매도 조건 만족
+                self.kiwoom.send_order("send_order_req", "0101", account, 2, code, num, price, hoga_lookup[hoga], "")  #매도
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
