@@ -34,14 +34,14 @@ gs = gs.apply(to_numeric) #naver는 데이터가 string이여서 numeric로 변�
 
 ma5=gs['Close'].rolling(window=5).mean()  #yahoo는 'Adj Close', naver는 'Close'
 ma20=gs['Close'].rolling(window=20).mean()
-ma60=gs['Close'].rolling(window=60).mean()
-ma120=gs['Close'].rolling(window=120).mean()
-# print(ma5.tail(10))
-# print(gs['Volume']!=0), 공휴일(거래량=0) 데이터가 원본에 없어서 코드는 무의미 함
+# trade_amount=gs['Volume']
+# ma60=gs['Close'].rolling(window=60).mean()
+# ma120=gs['Close'].rolling(window=120).mean()
+
 gs.insert(len(gs.columns), "MA5", ma5)
 gs.insert(len(gs.columns), "MA20", ma20)
-gs.insert(len(gs.columns), "MA60", ma60)
-gs.insert(len(gs.columns), "MA120", ma120)
+# gs.insert(len(gs.columns), "MA60", ma60)
+# gs.insert(len(gs.columns), "MA120", ma120)
 print(gs.tail(20))
 
 # 한글 폰트 사용을 위해서 세팅
@@ -51,13 +51,20 @@ font = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font)
 
 import matplotlib.pyplot as plt
-plt.title(input_jongmok[1])
-plt.plot(gs.index, gs['Close'], label="Close")
-plt.plot(gs.index, gs['MA5'], label='MA5')
-plt.plot(gs.index, gs['MA20'], label='MA20')
-plt.plot(gs.index, gs['MA60'], label='MA60')
-plt.plot(gs.index, gs['MA120'], label='MA120')
+fig, ax1=plt.subplots() # subplot 관련 자료 검색 필요
+fig.suptitle(input_jongmok[1]) 
+line1=ax1.plot(gs.index, gs['Close'], marker='o', markersize=3, label="Close")
+line2=ax1.plot(gs.index, gs['MA5'], marker='o', markersize=3, label='MA5')
+line3=ax1.plot(gs.index, gs['MA20'], marker='o', markersize=3, label="MA20")
+# plt.plot(gs.index, gs['MA60'], label='MA60')
+# plt.plot(gs.index, gs['MA120'], label='MA120')
 
-plt.legend(loc="best")
+ax2=ax1.twinx()
+# line4=ax2.plot(gs.index, gs['Volume'], color = 'black', marker='o', markersize=3, label="Volume")
+
+lines = line1+line2+line3 #+line4
+labels = [l.get_label() for l in lines]
+
+ax1.legend(lines, labels, loc="best")
 plt.grid()
 plt.show()
