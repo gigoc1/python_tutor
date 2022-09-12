@@ -43,6 +43,13 @@ def get_estimated_dividend_yield(code):
     dividend_yield = sorted(dividend_yield.items())[-1] 
     return dividend_yield[1]
 
+def get_3year_treasury():
+    url = "http://www.index.go.kr/strata/jsp/showStblGams3.jsp?stts_cd=288401&amp;idx_cd=2884&amp;freq=Y&amp;period=1998:2016"
+    html = requests.get(url).text
+    soup = BeautifulSoup(html, 'html5lib')
+    td_data = soup.select("tr td")
+    print(html)
+
 def get_current_3year_treasury():
     url = "http://finance.naver.com/marketindex/interestDailyQuote.nhn?marketindexCd=IRR_GOVT03Y&page=1"
     html = requests.get(url).text
