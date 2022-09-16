@@ -21,15 +21,16 @@ criteria_list={}
 
 def moving_avg():
     for code in jongmok_code:
-        gs = web.DataReader(code, "naver", "2022-05-01")
+        gs = web.DataReader(code, "naver", "2022-07-01")
         gs = gs.apply(to_numeric) #naver는 데이터가 string이여서 numeric로 변경 필요. yahoo는 필요없음
 
         ma5=gs['Close'].rolling(window=5).mean()  #yahoo는 'Adj Close', naver는 'Close'
         ma20=gs['Close'].rolling(window=20).mean()
         # ma60=gs['Close'].rolling(window=60).mean()
         # ma120=gs['Close'].rolling(window=120).mean()
-        sell_on=(ma5[-2]>=ma20[-2]) and (ma5[-1]<ma20[-1])
-        buy_on=(ma5[-2]<=ma20[-2]) and (ma5[-1]>ma20[-1])
-        if sell_on or buy_on:
-            criteria_list[code]=[sell_on,buy_on, gs['Close'][-1]]
+        if len(ma5) > 3 and len(ma20) > 3:
+            sell_on=(ma5[-2]>=ma20[-2]) and (ma5[-1]<ma20[-1])
+            buy_on=(ma5[-2]<=ma20[-2]) and (ma5[-1]>ma20[-1])
+            if sell_on or buy_on:
+                criteria_list[code]=[sell_on,buy_on, gs['Close'][-1]]
     return criteria_list

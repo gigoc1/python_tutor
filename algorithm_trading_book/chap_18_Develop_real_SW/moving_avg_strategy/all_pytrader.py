@@ -23,7 +23,7 @@ class MyWindow(QMainWindow, form_class):
         self.timer.timeout.connect(self.timeout)
 
         self.timer2 = QTimer(self)
-        self.timer2.start(1000*10)
+        self.timer2.start(1000*60*5)
         self.timer2.timeout.connect(self.timeout2)
 
         self.timer3 = QTimer(self)
@@ -180,16 +180,20 @@ class MyWindow(QMainWindow, form_class):
             hoga = split_row_data[2]
             code = split_row_data[1]
             num = split_row_data[3]
-            price = split_row_data[4]
+            # price = split_row_data[4]
+            price = 0  # 시장가 매수로 금액은 0원으로 설정
 
             if int(split_row_data[3]) == 0 and split_row_data[6] =='True': # 매수 조건 만족
                 # num=10  일정 종목당 수량 매수
                 num=str(int(500000/int(split_row_data[4])))  #일정 종목당 금액 매수
-                print(num+":"+str(index))
+                # print(num+":"+str(index))
                 self.kiwoom.send_order("send_order_req", "0101", account, 1, code, num, price, hoga_lookup[hoga], "")  #매수
 
             if int(split_row_data[3]) > 0 and split_row_data[5] =='True': # 매도 조건 만족
+                print("trade sell!!")
                 self.kiwoom.send_order("send_order_req", "0101", account, 2, code, num, price, hoga_lookup[hoga], "")  #매도
+
+            time.sleep(0.5) #send_order 주문은 1초에 5회로 제한(키움 정책), 초과 시 에러 송출/주문 무시
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
