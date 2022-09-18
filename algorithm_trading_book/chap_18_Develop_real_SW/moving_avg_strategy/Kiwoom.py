@@ -152,6 +152,7 @@ class Kiwoom(QAxWidget):
     # multi data
         rows = self._get_repeat_cnt(trcode, rqname)
         for i in range(rows):
+            jongmok_number = self._comm_get_data(trcode, "", rqname, i, "종목번호")
             name = self._comm_get_data(trcode, "", rqname, i, "종목명")
             quantity = self._comm_get_data(trcode, "", rqname, i, "보유수량")
             purchase_price = self._comm_get_data(trcode, "", rqname, i, "매입가")
@@ -165,7 +166,7 @@ class Kiwoom(QAxWidget):
             eval_profit_loss_price = Kiwoom.change_format(eval_profit_loss_price)
             earning_rate = Kiwoom.change_format2(earning_rate)
 
-            self.opw00018_output['multi'].append([name, quantity, purchase_price, current_price, eval_profit_loss_price, earning_rate])
+            self.opw00018_output['multi'].append([name, jongmok_number, quantity, purchase_price, current_price, eval_profit_loss_price, earning_rate])
     
     def _opt10081(self, rqname, trcode):
         data_cnt = self._get_repeat_cnt(trcode, rqname)

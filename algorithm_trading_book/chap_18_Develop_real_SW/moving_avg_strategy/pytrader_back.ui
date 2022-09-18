@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>PyTrader v0.0.5</string>
+   <string>PyTrader v0.0.4</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QGroupBox" name="groupBox">
@@ -247,7 +247,7 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>901</width>
+       <width>771</width>
        <height>111</height>
       </rect>
      </property>
@@ -291,27 +291,16 @@
       <rect>
        <x>10</x>
        <y>140</y>
-       <width>901</width>
+       <width>771</width>
        <height>261</height>
       </rect>
-     </property>
-     <property name="sortingEnabled">
-      <bool>true</bool>
      </property>
      <property name="rowCount">
       <number>0</number>
      </property>
-     <property name="columnCount">
-      <number>7</number>
-     </property>
      <column>
       <property name="text">
        <string>종목명</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>코드</string>
       </property>
      </column>
      <column>
@@ -387,9 +376,6 @@
        <width>901</width>
        <height>281</height>
       </rect>
-     </property>
-     <property name="sortingEnabled">
-      <bool>false</bool>
      </property>
      <property name="rowCount">
       <number>1</number>

@@ -23,11 +23,11 @@ class MyWindow(QMainWindow, form_class):
         self.timer.timeout.connect(self.timeout)
 
         self.timer2 = QTimer(self)
-        self.timer2.start(1000*60*5)
+        self.timer2.start(1000*60*10)
         self.timer2.timeout.connect(self.timeout2)
 
         self.timer3 = QTimer(self)
-        self.timer3.start(1000*60*10)
+        self.timer3.start(1000*60*30)
         self.timer3.timeout.connect(self.timeout3)
 
         accouns_num = int(self.kiwoom.get_login_info("ACCOUNT_CNT"))
@@ -70,7 +70,7 @@ class MyWindow(QMainWindow, form_class):
         stock_row_count=self.tableWidget_2.rowCount()
         if stock_row_count > 0: #조회 종목 없을때 에러 방지, 테이블 기본 행 갯수는 0으로 셋팅(QtDesigner)
             for index in range(0,stock_row_count):
-                stock_keep[self.tableWidget_2.item(index,0).text()]=self.tableWidget_2.item(index,1).text()
+                stock_keep[self.tableWidget_2.item(index,0).text()]=self.tableWidget_2.item(index,2).text()
         
         criteria_list=moving_avg()
         
@@ -133,6 +133,7 @@ class MyWindow(QMainWindow, form_class):
         self.tableWidget.resizeRowsToContents()
 
         # Item list
+        self.tableWidget_2.setSortingEnabled(False)
         item_count = len(self.kiwoom.opw00018_output['multi'])
         self.tableWidget_2.setRowCount(item_count)
 
@@ -140,8 +141,18 @@ class MyWindow(QMainWindow, form_class):
             row = self.kiwoom.opw00018_output['multi'][j]
             for i in range(len(row)):
                 item = QTableWidgetItem(row[i])
+                item_refresh=QTableWidgetItem()    #QTableWidgetItem에 숫자로 입력할 때는 item_refresh처럼 빈 객체 만들고, setData 함수 이용 필요
+                if i<2:   # 테이블 데이터 정렬을 위해 숫자와 문자열 구분하여 입력
+                    self.tableWidget_2.setItem(j, i, item)
+                elif i >= 2 and i<6:
+                    item_refresh.setData(Qt.DisplayRole, int(str(row[i]).replace(',','')))  # '1,200'을 숫자로 만들려면 ','삭제해야 함
+                    self.tableWidget_2.setItem(j, i, item_refresh)
+                elif i==6:
+                    item_refresh.setData(Qt.DisplayRole, float(row[i]))
+                    self.tableWidget_2.setItem(j, i, item_refresh)
+                item_refresh.setTextAlignment(Qt.AlignVCenter | Qt.AlignRight)
                 item.setTextAlignment(Qt.AlignVCenter | Qt.AlignRight)
-                self.tableWidget_2.setItem(j, i, item)
+        self.tableWidget_2.setSortingEnabled(True)
 
         self.tableWidget_2.resizeRowsToContents()
 
@@ -151,6 +162,7 @@ class MyWindow(QMainWindow, form_class):
         f.close()
 
         row_count = len(buy_list)
+        self.tableWidget_3.setSortingEnabled(False)
         self.tableWidget_3.setRowCount(row_count)
 
         # buy list
@@ -162,6 +174,7 @@ class MyWindow(QMainWindow, form_class):
                 item.setTextAlignment(Qt.AlignVCenter | Qt.AlignCenter)
                 self.tableWidget_3.setItem(j, i, item)
 
+        self.tableWidget_3.setSortingEnabled(True)
         self.tableWidget_3.resizeRowsToContents()
 
     def trade_stocks(self):
@@ -173,7 +186,7 @@ class MyWindow(QMainWindow, form_class):
 
         account = self.comboBox.currentText()
 
-        # sell/buy list
+        # 추천 종목에서 매수/매도
         for index , row_data in enumerate(buy_list):
             row_data=row_data.strip('\n')  # 열 마지막에 '\n'을 삭제해야 'True'가 됨(그렇지 않으면 'True\n'과 같음)
             split_row_data = row_data.split(';')
@@ -185,15 +198,29 @@ class MyWindow(QMainWindow, form_class):
 
             if int(split_row_data[3]) == 0 and split_row_data[6] =='True': # 매수 조건 만족
                 # num=10  일정 종목당 수량 매수
-                num=str(int(500000/int(split_row_data[4])))  #일정 종목당 금액 매수
-                # print(num+":"+str(index))
+                num=str(int(100000/int(split_row_data[4])))  #일정 종목당 금액 매수
+                print("trade buy in buy_list!!")
                 self.kiwoom.send_order("send_order_req", "0101", account, 1, code, num, price, hoga_lookup[hoga], "")  #매수
 
             if int(split_row_data[3]) > 0 and split_row_data[5] =='True': # 매도 조건 만족
-                print("trade sell!!")
+                print("trade sell in buy_list!!")
                 self.kiwoom.send_order("send_order_req", "0101", account, 2, code, num, price, hoga_lookup[hoga], "")  #매도
 
-            time.sleep(0.5) #send_order 주문은 1초에 5회로 제한(키움 정책), 초과 시 에러 송출/주문 무시
+            time.sleep(0.2) #send_order 주문은 1초에 5회로 제한(키움 정책), 초과 시 에러 송출/주문 무시
+
+
+        
+        # 일정 수익율 이상 종목 매도
+        stock_row_count=self.tableWidget_2.rowCount()
+        if stock_row_count > 0: #조회 종목 없을때 에러 방지, 테이블 기본 행 갯수는 0으로 셋팅(QtDesigner)
+            for index in range(0,stock_row_count):
+                code=str(self.tableWidget_2.item(index,1).text()).replace('A','')
+                num=self.tableWidget_2.item(index,2).text()
+                price=0
+                if float(self.tableWidget_2.item(index,6).text()) >= 20.0:
+                    self.kiwoom.send_order("send_order_req", "0101", account, 2, code, num, price, "03", "")  #매도
+                    print("trade sell over earning rate")
+                    time.sleep(0.2)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

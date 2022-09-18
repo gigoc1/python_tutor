@@ -36,4 +36,10 @@ pip uninstall 패키지: 패키지 삭제
 8. 숫자 vs 글자 판별(https://cotak.tistory.com/137)
  - isdecimal(), isdigit(), isnumeric()
  - 예) s='28212', print(s.isdigit()) #True
- - 
+9. QTableWidget의 아이템 크기 정렬 후 데이터 재입력할 경우
+ - 예시)
+   self.tableWidget_2.setSortingEnabled(False)
+   ~~아이템 삽입(for 구문)
+   self.tableWidget_2.setSortingEnabled(True)
+
+   
