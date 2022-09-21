@@ -1,3 +1,4 @@
+from xml.etree.ElementTree import ParseError
 import pandas as pd
 import pandas_datareader.data as web
 from pandas import to_numeric
@@ -21,9 +22,11 @@ criteria_list={}
 
 def moving_avg():
     for code in jongmok_code:
-        gs = web.DataReader(code, "naver", "2022-07-01")
-        gs = gs.apply(to_numeric) #naver는 데이터가 string이여서 numeric로 변경 필요. yahoo는 필요없음
-
+        try:    # 신생 업체 상장 시에는 ParseError 발생하므로 에러 처리 필요
+            gs = web.DataReader(code, "naver", "2022-08-01")
+            gs = gs.apply(to_numeric) #naver는 데이터가 string이여서 numeric로 변경 필요. yahoo는 필요없음
+        except ParseError as e:
+            pass
         ma5=gs['Close'].rolling(window=5).mean()  #yahoo는 'Adj Close', naver는 'Close'
         ma20=gs['Close'].rolling(window=20).mean()
         # ma60=gs['Close'].rolling(window=60).mean()

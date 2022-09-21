@@ -60,9 +60,9 @@ line3=ax1.plot(gs.index, gs['MA20'], marker='o', markersize=3, label="MA20")
 # plt.plot(gs.index, gs['MA120'], label='MA120')
 
 ax2=ax1.twinx()
-# line4=ax2.plot(gs.index, gs['Volume'], color = 'black', marker='o', markersize=3, label="Volume")
+line4=ax2.plot(gs.index, gs['Volume'], color = 'black', marker='o', markersize=3, label="Volume")
 
-lines = line1+line2+line3 #+line4
+lines = line1+line2+line3 +line4
 labels = [l.get_label() for l in lines]
 
 ax1.legend(lines, labels, loc="best")
