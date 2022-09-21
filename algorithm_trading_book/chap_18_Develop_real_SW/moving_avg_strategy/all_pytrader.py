@@ -65,6 +65,19 @@ class MyWindow(QMainWindow, form_class):
         if self.checkBox.isChecked():
             self.check_balance()
 
+                # 일정 수익율 이상 종목 매도
+        account = self.comboBox.currentText()
+        stock_row_count=self.tableWidget_2.rowCount()
+        if stock_row_count > 0: #조회 종목 없을때 에러 방지, 테이블 기본 행 갯수는 0으로 셋팅(QtDesigner)
+            for index in range(0,stock_row_count):
+                code=str(self.tableWidget_2.item(index,1).text()).replace('A','')
+                num=self.tableWidget_2.item(index,2).text()
+                price=0
+                if float(self.tableWidget_2.item(index,6).text()) >= 20.0:
+                    self.kiwoom.send_order("send_order_req", "0101", account, 2, code, num, price, "03", "")  #매도
+                    print("trade sell over earning rate")
+                    time.sleep(0.2)
+
     def timeout3(self):
         stock_keep={} #{종목명:수량}
         stock_row_count=self.tableWidget_2.rowCount()
@@ -198,7 +211,7 @@ class MyWindow(QMainWindow, form_class):
 
             if int(split_row_data[3]) == 0 and split_row_data[6] =='True': # 매수 조건 만족
                 # num=10  일정 종목당 수량 매수
-                num=str(int(100000/int(split_row_data[4])))  #일정 종목당 금액 매수
+                num=str(int(200000/int(split_row_data[4])))  #일정 종목당 금액 매수
                 print("trade buy in buy_list!!")
                 self.kiwoom.send_order("send_order_req", "0101", account, 1, code, num, price, hoga_lookup[hoga], "")  #매수
 
@@ -210,17 +223,7 @@ class MyWindow(QMainWindow, form_class):
 
 
         
-        # 일정 수익율 이상 종목 매도
-        stock_row_count=self.tableWidget_2.rowCount()
-        if stock_row_count > 0: #조회 종목 없을때 에러 방지, 테이블 기본 행 갯수는 0으로 셋팅(QtDesigner)
-            for index in range(0,stock_row_count):
-                code=str(self.tableWidget_2.item(index,1).text()).replace('A','')
-                num=self.tableWidget_2.item(index,2).text()
-                price=0
-                if float(self.tableWidget_2.item(index,6).text()) >= 20.0:
-                    self.kiwoom.send_order("send_order_req", "0101", account, 2, code, num, price, "03", "")  #매도
-                    print("trade sell over earning rate")
-                    time.sleep(0.2)
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
