@@ -139,10 +139,12 @@ class MyWindow(QMainWindow, form_class):
         self.tableWidget.setItem(0, 0, item)
 
         for i in range(1, 6):
-            item = QTableWidgetItem(self.kiwoom.opw00018_output['single'][i - 1])
-            item.setTextAlignment(Qt.AlignVCenter | Qt.AlignRight)
-            self.tableWidget.setItem(0, i, item)
-        
+            try:   # "IndexError: list index out of range" 발생하여 처리
+                item = QTableWidgetItem(self.kiwoom.opw00018_output['single'][i - 1])
+                item.setTextAlignment(Qt.AlignVCenter | Qt.AlignRight)
+                self.tableWidget.setItem(0, i, item)
+            except IndexError as e:
+                pass
         self.tableWidget.resizeRowsToContents()
 
         # Item list
