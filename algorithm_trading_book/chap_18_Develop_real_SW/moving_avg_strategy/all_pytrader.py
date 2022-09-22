@@ -62,6 +62,7 @@ class MyWindow(QMainWindow, form_class):
         self.statusbar.showMessage(state_msg + " | " + time_msg)
 
     def timeout2(self):
+        print("timeout2: "+QTime.currentTime().toString("hh:mm:ss"))
         if self.checkBox.isChecked():
             self.check_balance()
 
@@ -79,6 +80,7 @@ class MyWindow(QMainWindow, form_class):
                     time.sleep(0.2)
 
     def timeout3(self):
+        print("timeout3: "+QTime.currentTime().toString("hh:mm:ss"))
         stock_keep={} #{종목명:수량}
         stock_row_count=self.tableWidget_2.rowCount()
         if stock_row_count > 0: #조회 종목 없을때 에러 방지, 테이블 기본 행 갯수는 0으로 셋팅(QtDesigner)
@@ -144,7 +146,7 @@ class MyWindow(QMainWindow, form_class):
                 item.setTextAlignment(Qt.AlignVCenter | Qt.AlignRight)
                 self.tableWidget.setItem(0, i, item)
             except IndexError as e:
-                pass
+                print("IndexError")
         self.tableWidget.resizeRowsToContents()
 
         # Item list

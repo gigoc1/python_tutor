@@ -2,6 +2,8 @@ from xml.etree.ElementTree import ParseError
 import pandas as pd
 import pandas_datareader.data as web
 from pandas import to_numeric
+import datetime
+from dateutil.relativedelta import relativedelta
 
 url = 'https://kind.krx.co.kr/corpgeneral/corpList.do'
 jongmok_code_kp = pd.read_html(url+"?method=download&marketType=stockMkt")[0]
@@ -20,13 +22,16 @@ jongmok_code = jongmok_code.apply(make_code_ks)
 
 criteria_list={}
 
+dt_now=datetime.date.today()
+dt_previous=dt_now+relativedelta(days=-40) #40일 전 날짜 계산
+
 def moving_avg():
     for code in jongmok_code:
         try:    # 신생 업체 상장 시에는 ParseError 발생하므로 에러 처리 필요
-            gs = web.DataReader(code, "naver", "2022-08-01")
+            gs = web.DataReader(code, "naver", dt_previous)
             gs = gs.apply(to_numeric) #naver는 데이터가 string이여서 numeric로 변경 필요. yahoo는 필요없음
         except ParseError as e:
-            pass
+            print("ParseError")
         ma5=gs['Close'].rolling(window=5).mean()  #yahoo는 'Adj Close', naver는 'Close'
         ma20=gs['Close'].rolling(window=20).mean()
         # ma60=gs['Close'].rolling(window=60).mean()
