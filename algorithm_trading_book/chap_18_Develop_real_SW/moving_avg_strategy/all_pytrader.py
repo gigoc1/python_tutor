@@ -23,11 +23,11 @@ class MyWindow(QMainWindow, form_class):
         self.timer.timeout.connect(self.timeout)
 
         self.timer2 = QTimer(self)
-        self.timer2.start(1000*60*10)
+        self.timer2.start(1000*60*(self.spinBox_3.value()))
         self.timer2.timeout.connect(self.timeout2)
 
         self.timer3 = QTimer(self)
-        self.timer3.start(1000*60*30)
+        self.timer3.start(1000*60*(self.spinBox_4.value()))
         self.timer3.timeout.connect(self.timeout3)
 
         accouns_num = int(self.kiwoom.get_login_info("ACCOUNT_CNT"))
@@ -39,6 +39,8 @@ class MyWindow(QMainWindow, form_class):
         self.lineEdit.textChanged.connect(self.code_changed)
         self.pushButton.clicked.connect(self.send_order)
         self.pushButton_2.clicked.connect(self.check_balance)
+        self.spinBox_3.valueChanged.connect(self.interval_changed_timer2)
+        self.spinBox_4.valueChanged.connect(self.interval_changed_timer3)
 
         self.load_buy_sell_list()
 
@@ -69,12 +71,12 @@ class MyWindow(QMainWindow, form_class):
                 # 일정 수익율 이상 종목 매도
         account = self.comboBox.currentText()
         stock_row_count=self.tableWidget_2.rowCount()
-        if stock_row_count > 0: #조회 종목 없을때 에러 방지, 테이블 기본 행 갯수는 0으로 셋팅(QtDesigner)
+        if self.checkBox_2.isChecked() and stock_row_count > 0: #조회 종목 없을때 에러 방지, 테이블 기본 행 갯수는 0으로 셋팅(QtDesigner)
             for index in range(0,stock_row_count):
                 code=str(self.tableWidget_2.item(index,1).text()).replace('A','')
                 num=self.tableWidget_2.item(index,2).text()
                 price=0
-                if float(self.tableWidget_2.item(index,6).text()) >= 20.0:
+                if float(self.tableWidget_2.item(index,6).text()) >= self.doubleSpinBox_3.value(): # 20.0
                     self.kiwoom.send_order("send_order_req", "0101", account, 2, code, num, price, "03", "")  #매도
                     print("trade sell over earning rate")
                     time.sleep(0.2)
@@ -104,6 +106,14 @@ class MyWindow(QMainWindow, form_class):
         code = self.lineEdit.text()
         name = self.kiwoom.get_master_code_name(code)
         self.lineEdit_2.setText(name)
+
+    def interval_changed_timer2(self):
+        self.timer2.stop()
+        self.timer2.setInterval(1000*60*self.spinBox_3.value())
+        self.timer2.start()
+
+    def interval_changed_timer3(self):
+        self.timer3.setInterval(1000*60*self.spinBox_4.value())
 
     def send_order(self):
         order_type_lookup = {'신규매수': 1, '신규매도': 2, '매수취소': 3, '매도취소': 4}

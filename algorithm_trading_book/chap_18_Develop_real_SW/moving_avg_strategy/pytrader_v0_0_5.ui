@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>PyTrader v0.0.6</string>
+   <string>PyTrader v0.0.5</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QGroupBox" name="groupBox">
@@ -430,112 +430,6 @@
        <string>Buy_On</string>
       </property>
      </column>
-    </widget>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_4">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>290</y>
-      <width>191</width>
-      <height>251</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>자동주문 조건</string>
-    </property>
-    <widget class="QCheckBox" name="checkBox_2">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>111</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>수익율 매도</string>
-     </property>
-    </widget>
-    <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>60</y>
-       <width>91</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="maximum">
-      <double>500.000000000000000</double>
-     </property>
-     <property name="value">
-      <double>20.000000000000000</double>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_7">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>100</y>
-       <width>81</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Time2 [분]</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_8">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>130</y>
-       <width>71</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Time3 [분]</string>
-     </property>
-    </widget>
-    <widget class="QSpinBox" name="spinBox_3">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>98</y>
-       <width>71</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="minimum">
-      <number>1</number>
-     </property>
-     <property name="maximum">
-      <number>6000</number>
-     </property>
-     <property name="value">
-      <number>1</number>
-     </property>
-    </widget>
-    <widget class="QSpinBox" name="spinBox_4">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>128</y>
-       <width>71</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="minimum">
-      <number>10</number>
-     </property>
-     <property name="maximum">
-      <number>6000</number>
-     </property>
-     <property name="value">
-      <number>60</number>
-     </property>
     </widget>
    </widget>
   </widget>
