@@ -1,0 +1,2 @@
+1. Linux apache2, Python/CGI 설정
+ - reference: http://magpiebros.com/wordpress/2020/05/18/cgi/
