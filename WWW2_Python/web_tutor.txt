@@ -1,18 +1,28 @@
 1. Linux apache2, Python/CGI 설정
  - reference: http://magpiebros.com/wordpress/2020/05/18/cgi/
-2. 태그
- -<h1>: heading(제목) 태그, 1(큰것)~6(작은것)
- -<ul>: unordered list, <ol>: ordered list
- -<title>: 브라우저 탭 제목
- -<body>: 본문, <head>: 본문을 설명하는 태그(title, meta 태그 들이 여기에 속함)
-3. html 구조
- - <!doctype html>
-   <html>
-   <head> ~~ </head>
-   <body> ~~ </body>
-   </html>
-4. 링크거는법
-  <a>: anchor 태그
-  href="https://www.daum.net"
-  target="_blank"
-  title="html5 specification"
+2. apache2 서비스 확인/시작/정지/재시작
+ - 확인: service apache2 status
+ - 시작/정지/재시작: service apache2 start/stop/restart
+3. ubuntu apache2 cgi-python setting
+ - 설정파일 편집: /etc/apache2/sites-enabled/000-default.conf
+ - 예) 아래 <Directory> 부분 추가
+    <VirtualHost *:80 *:3000>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /home/cabox/workspace
+        <Directory /home/cabox/workspace>
+                AddHandler cgi-script .py
+                Options ExecCGI
+        </Directory>
+ - cgi 기능 on: sudo a2enmod cgi
+ - 웹서버 재시작: sudo service apache2 restart
+ - 파이썬 파일의 실행 속성 부여: sudo chmod a+x helloworld.py
+ - 오류 발생 시 오류메시지 확인: sudo tail -f /var/log/apache2/error.log
+ 4. wsl, ubuntu, apache2 설정 시 주의사항!!
+  - 000-default.conf파일 작성 시 아래 내용 추가
+        <Directory /home/cabox/workspace>
+                AddHandler cgi-script .py
+                Options ExecCGI
+                Require all granted
+        </Directory>
+  - 시작 페이지 변경 시에는 해당 폴더까지 모든 폴더의 권한 변경 필요
+    --> 각 필요한 경우에 따라, 읽기모드, 쓰기 모드 권한 부여
