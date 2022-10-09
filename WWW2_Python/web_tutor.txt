@@ -1,0 +1,18 @@
+1. Linux apache2, Python/CGI 설정
+ - reference: http://magpiebros.com/wordpress/2020/05/18/cgi/
+2. 태그
+ -<h1>: heading(제목) 태그, 1(큰것)~6(작은것)
+ -<ul>: unordered list, <ol>: ordered list
+ -<title>: 브라우저 탭 제목
+ -<body>: 본문, <head>: 본문을 설명하는 태그(title, meta 태그 들이 여기에 속함)
+3. html 구조
+ - <!doctype html>
+   <html>
+   <head> ~~ </head>
+   <body> ~~ </body>
+   </html>
+4. 링크거는법
+  <a>: anchor 태그
+  href="https://www.daum.net"
+  target="_blank"
+  title="html5 specification"
