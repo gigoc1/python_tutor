@@ -1,4 +1,5 @@
 import re
+from tracemalloc import start
 import pandas as pd
 import datetime
 import requests
@@ -44,11 +45,32 @@ def get_estimated_dividend_yield(code):
     return dividend_yield[1]
 
 def get_3year_treasury():
-    url = "http://www.index.go.kr/strata/jsp/showStblGams3.jsp?stts_cd=288401&amp;idx_cd=2884&amp;freq=Y&amp;period=1998:2016"
+    # url = "http://www.index.go.kr/strata/jsp/showStblGams3.jsp?stts_cd=288401&amp;idx_cd=2884&amp;freq=Y&amp;period=1998:2016"
+    url = "https://www.index.go.kr/potal/main/EachDtlPageDetail.do?idx_cd=1073"
     html = requests.get(url).text
     soup = BeautifulSoup(html, 'html5lib')
-    td_data = soup.select("tr td")
-    print(html)
+    
+    tr_data=soup.find('tr', {'data-id':'tr_107301_1'})
+    td_data=tr_data.find_all('td')
+
+    start_year=soup.select("tr.bg th")
+    start_year=start_year[1].text
+    # print("start_year: "+ start_year)
+
+    treasury_3year = {}
+    start_year = int(start_year)
+
+    now = datetime.datetime.now()
+    cur_year = now.year
+    index=0
+    for year in range(start_year, cur_year+1):
+        if year!=cur_year:
+            treasury_3year[year] = td_data[index].text
+        else:
+            treasury_3year[year] = td_data[-1].text
+        index += 1
+
+    return treasury_3year
 
 def get_current_3year_treasury():
     url = "http://finance.naver.com/marketindex/interestDailyQuote.nhn?marketindexCd=IRR_GOVT03Y&page=1"
@@ -66,16 +88,18 @@ def get_previous_dividend_yield(code):
 
     previous_dividend_yield = {}
 
-    for year in range(cur_year-5, cur_year):
+    for year in range(cur_year-5, cur_year+1):
         if str(str(year)+"/12") in dividend_yield.keys():
-            previous_dividend_yield[str(str(year)+"/12")] = dividend_yield[str(str(year)+"/12")]
+            previous_dividend_yield[year] = dividend_yield[str(str(year)+"/12")]
 
     return previous_dividend_yield
 
 if __name__ == "__main__":
-    dividend_yield = get_dividend_yield('058470')
-    print(dividend_yield)
-    estimated_dividend_yield = get_estimated_dividend_yield('058470') 
-    print(estimated_dividend_yield)
-    print(get_current_3year_treasury())
-    print(get_previous_dividend_yield('058470'))
+    # dividend_yield = get_dividend_yield('058470')
+    # print(dividend_yield)
+    # estimated_dividend_yield = get_estimated_dividend_yield('005930') 
+    # print(estimated_dividend_yield)
+    # print(get_current_3year_treasury())
+    # print(get_previous_dividend_yield('005930'))
+    get_3year_treasury()
+    # print(get_financial_statements('005930'))

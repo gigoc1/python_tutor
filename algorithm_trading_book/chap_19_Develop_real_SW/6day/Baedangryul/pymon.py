@@ -17,12 +17,13 @@ class PyMon:
     def get_min_max_dividend_to_treasury(self, code):
         previous_dividend_yield = webreader.get_previous_dividend_yield(code)
         three_years_treasury = webreader.get_3year_treasury()
-        print(three_years_treasury)
+        # print(previous_dividend_yield.keys())
+        # print(three_years_treasury.keys())
         now = datetime.datetime.now()
         cur_year = now.year
         previous_dividend_to_treasury = {}
 
-        for year in range(cur_year-5, cur_year):
+        for year in range(cur_year-5, cur_year+1):
             if year in previous_dividend_yield.keys() and year in three_years_treasury.keys():
                 ratio = float(previous_dividend_yield[year]) / float(three_years_treasury[year])
                 previous_dividend_to_treasury[year] = ratio
@@ -36,4 +37,5 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     pymon = PyMon()
     #pymon.run()
+    # print(pymon.calculate_estimated_dividend_to_treasury('058470'))
     print(pymon.get_min_max_dividend_to_treasury('058470'))

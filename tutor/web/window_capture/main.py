@@ -8,7 +8,7 @@ ESC_KEY=27
 FRAME_RATE = 120
 SLEEP_TIME = 1/FRAME_RATE
 
-capture = window.WindowCapture("PyTrader v0.0.5",FRAME_RATE)
+capture = window.WindowCapture("PyTrader v0.0.6",FRAME_RATE)
 
 while True:
     start=time.time()
