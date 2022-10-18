@@ -97,9 +97,9 @@ def get_previous_dividend_yield(code):
 if __name__ == "__main__":
     # dividend_yield = get_dividend_yield('058470')
     # print(dividend_yield)
-    # estimated_dividend_yield = get_estimated_dividend_yield('005930') 
-    # print(estimated_dividend_yield)
+    estimated_dividend_yield = get_estimated_dividend_yield('005930') 
+    print(estimated_dividend_yield)
     # print(get_current_3year_treasury())
     # print(get_previous_dividend_yield('005930'))
-    get_3year_treasury()
-    # print(get_financial_statements('005930'))
+    # get_3year_treasury()
+    print(get_financial_statements('005930'))

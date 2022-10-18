@@ -32,10 +32,20 @@ class PyMon:
         max_ratio = max(previous_dividend_to_treasury.values())
 
         return (min_ratio, max_ratio)
+    
+    def buy_check_by_dividend_algorithm(self, code):
+        estimated_dividend_to_treasury = self.calculate_estimated_dividend_to_treasury(code)
+        (min_ratio, max_ratio) = self.get_min_max_dividend_to_treasury(code)
+
+        if estimated_dividend_to_treasury >= max_ratio:
+            return (1, estimated_dividend_to_treasury)
+        else:
+            return (0, estimated_dividend_to_treasury)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     pymon = PyMon()
     #pymon.run()
-    # print(pymon.calculate_estimated_dividend_to_treasury('058470'))
-    print(pymon.get_min_max_dividend_to_treasury('058470'))
+    # print(pymon.calculate_estimated_dividend_to_treasury('005930'))
+    # print(pymon.get_min_max_dividend_to_treasury('090350'))
+    print(pymon.buy_check_by_dividend_algorithm('058470'))

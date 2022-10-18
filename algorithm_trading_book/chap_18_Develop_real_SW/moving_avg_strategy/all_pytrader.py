@@ -225,7 +225,7 @@ class MyWindow(QMainWindow, form_class):
 
             if int(split_row_data[3]) == 0 and split_row_data[6] =='True': # 매수 조건 만족
                 # num=10  일정 종목당 수량 매수
-                num=str(int(200000/int(split_row_data[4])))  #일정 종목당 금액 매수
+                num=str(int(1000000/int(split_row_data[4])))  #일정 종목당 금액 매수
                 print("trade buy in buy_list!!")
                 self.kiwoom.send_order("send_order_req", "0101", account, 1, code, num, price, hoga_lookup[hoga], "")  #매수
 
