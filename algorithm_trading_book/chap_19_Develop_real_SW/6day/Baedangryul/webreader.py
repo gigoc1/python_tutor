@@ -40,7 +40,9 @@ def get_dividend_yield(code):
     return dividend_yield
 
 def get_estimated_dividend_yield(code):
-    dividend_yield = get_financial_statements(code) 
+    dividend_yield = get_financial_statements(code)
+    if len(dividend_yield) == 0:
+        return "0"
     dividend_yield = sorted(dividend_yield.items())[-1] 
     return dividend_yield[1]
 
@@ -95,11 +97,11 @@ def get_previous_dividend_yield(code):
     return previous_dividend_yield
 
 if __name__ == "__main__":
-    # dividend_yield = get_dividend_yield('058470')
+    # dividend_yield = get_dividend_yield('293940')
     # print(dividend_yield)
-    estimated_dividend_yield = get_estimated_dividend_yield('005930') 
-    print(estimated_dividend_yield)
+    # estimated_dividend_yield = get_estimated_dividend_yield('000300') 
+    # print(estimated_dividend_yield)
     # print(get_current_3year_treasury())
-    # print(get_previous_dividend_yield('005930'))
+    print(get_previous_dividend_yield('293940'))
     # get_3year_treasury()
-    print(get_financial_statements('005930'))
+    # print(get_financial_statements('000300'))

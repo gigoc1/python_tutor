@@ -26,9 +26,9 @@ class MyWindow(QMainWindow, form_class):
         self.timer2.start(1000*60*(self.spinBox_3.value()))
         self.timer2.timeout.connect(self.timeout2)
 
-        self.timer3 = QTimer(self)
-        self.timer3.start(1000*60*(self.spinBox_4.value()))
-        self.timer3.timeout.connect(self.timeout3)
+        # self.timer3 = QTimer(self)
+        # self.timer3.start(1000*60*(self.spinBox_4.value()))
+        # self.timer3.timeout.connect(self.timeout3)
 
         accouns_num = int(self.kiwoom.get_login_info("ACCOUNT_CNT"))
         accounts = self.kiwoom.get_login_info("ACCNO")
@@ -40,7 +40,7 @@ class MyWindow(QMainWindow, form_class):
         self.pushButton.clicked.connect(self.send_order)
         self.pushButton_2.clicked.connect(self.check_balance)
         self.spinBox_3.valueChanged.connect(self.interval_changed_timer2)
-        self.spinBox_4.valueChanged.connect(self.interval_changed_timer3)
+        # self.spinBox_4.valueChanged.connect(self.interval_changed_timer3)
 
         self.load_buy_sell_list()
 
@@ -80,8 +80,15 @@ class MyWindow(QMainWindow, form_class):
                     self.kiwoom.send_order("send_order_req", "0101", account, 2, code, num, price, "03", "")  #매도
                     print("trade sell over earning rate")
                     time.sleep(0.2)
+        market_start_time = QTime(15, 20, 0)
+        current_time = QTime.currentTime()
 
-    def timeout3(self):
+        if current_time > market_start_time and self.trade_stocks_done is False:
+            self.autotrade()
+            self.trade_stocks_done = True
+
+
+    def autotrade(self):
         print("timeout3: "+QTime.currentTime().toString("hh:mm:ss"))
         stock_keep={} #{종목명:수량}
         stock_row_count=self.tableWidget_2.rowCount()
@@ -112,8 +119,8 @@ class MyWindow(QMainWindow, form_class):
         self.timer2.setInterval(1000*60*self.spinBox_3.value())
         self.timer2.start()
 
-    def interval_changed_timer3(self):
-        self.timer3.setInterval(1000*60*self.spinBox_4.value())
+    # def interval_changed_timer3(self):
+    #     self.timer3.setInterval(1000*60*self.spinBox_4.value())
 
     def send_order(self):
         order_type_lookup = {'신규매수': 1, '신규매도': 2, '매수취소': 3, '매도취소': 4}
@@ -225,7 +232,7 @@ class MyWindow(QMainWindow, form_class):
 
             if int(split_row_data[3]) == 0 and split_row_data[6] =='True': # 매수 조건 만족
                 # num=10  일정 종목당 수량 매수
-                num=str(int(1000000/int(split_row_data[4])))  #일정 종목당 금액 매수
+                num=str(int(int(self.spinBox_4.value())/int(split_row_data[4])))  #일정 종목당 금액 매수
                 print("trade buy in buy_list!!")
                 self.kiwoom.send_order("send_order_req", "0101", account, 1, code, num, price, hoga_lookup[hoga], "")  #매수
 
