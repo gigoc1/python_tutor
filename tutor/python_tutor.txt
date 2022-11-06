@@ -48,3 +48,6 @@ pip uninstall 패키지: 패키지 삭제
  - 이제 위 table에서 <tr>태그를 가져오는 법
    trs = table.find_all('tr')
    
+11. 리눅스 가상환경 설치
+10. 리눅스 가상환경 설치
+ 1) reference:https://digiconfactory.tistory.com/entry/파이썬-가상환경-설치-리눅스-WSL2
