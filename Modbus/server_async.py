@@ -31,7 +31,7 @@ import asyncio
 import logging
 import os
 
-from examples.helper import get_commandline
+from helper import get_commandline
 from pymodbus.datastore import (
     ModbusSequentialDataBlock,
     ModbusServerContext,

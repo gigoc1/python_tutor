@@ -49,5 +49,13 @@ pip uninstall 패키지: 패키지 삭제
    trs = table.find_all('tr')
    
 11. 리눅스 가상환경 설치
-10. 리눅스 가상환경 설치
- 1) reference:https://digiconfactory.tistory.com/entry/파이썬-가상환경-설치-리눅스-WSL2
+ 1) reference:https://steemit.com/kr/@anpigon/-virtualenv-python--1546840427366
+
+12. 파이썬 다른 버전 설치하기
+ 1) reference: https://romanticq.github.io/우분투/ubuntu-virtualenv/
+ 2) 방법 
+    $ sudo apt-get update
+    $ sudo add-apt-repository ppa:deadsnakes/ppa
+    $ sudo apt-get update
+    $ sudo apt install python3.6
+  
