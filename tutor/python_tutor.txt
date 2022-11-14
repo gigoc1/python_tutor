@@ -43,10 +43,13 @@ pip uninstall 패키지: 패키지 삭제
    self.tableWidget_2.setSortingEnabled(True)
 10. Web Crawling
  1) 특정 요소만 찾는법(reference: https://yuda.dev/m/260)
- - class속성 값이 grid인 <table>태그 가져오는 법
-   table = soup.find('table', {'class': 'grid'})
- - 이제 위 table에서 <tr>태그를 가져오는 법
-   trs = table.find_all('tr')
+   - class속성 값이 grid인 <table>태그 가져오는 법
+    table = soup.find('table', {'class': 'grid'})
+   - 이제 위 table에서 <tr>태그를 가져오는 법
+    trs = table.find_all('tr')
+ 2) select함수에 사용하는 tag, class, id
+   - select(#id > tag.class > child_tag)
+   - class에 띄어쓰기가 있으면 하나만 사용가능(예: <a class=ab cd>)
    
 11. 리눅스 가상환경 설치
  1) reference:https://steemit.com/kr/@anpigon/-virtualenv-python--1546840427366
