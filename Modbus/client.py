@@ -1,8 +1,8 @@
-from pymodbus.client import ModbusTcpClient
+from pymodbus.client import ModbusSerialClient
+client = ModbusSerialClient(method='rtu', port='COM6')
+client.connect()
 
-client = ModbusTcpClient('172.30.248.239')
-# client.write_coil(1, True)
-result = client.read_holding_registers(0,10,1)
-print(result.registers)
-print(result.getRegister(2))
+res = client.read_holding_registers(address=0, count=2, unit=1)
+print(res.registers) # shows the result, type: list
+
 client.close()

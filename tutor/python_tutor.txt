@@ -58,4 +58,9 @@ pip uninstall 패키지: 패키지 삭제
     $ sudo add-apt-repository ppa:deadsnakes/ppa
     $ sudo apt-get update
     $ sudo apt install python3.6
+13. pymodbus serial 설치 시 최대 고민
+ 1) pyserial 3.5를 설치해야함
+   - "pip uninstall serial" 후에 "pip install pyserial"을 수행함
+ 2) 중요!!: 추가적으로 "pip install --upgrade --force-reinstall pyserial"을 수행할 것
+ 3) reference: https://stackoverflow.com/questions/11403932/python-attributeerror-module-object-has-no-attribute-serial
   
