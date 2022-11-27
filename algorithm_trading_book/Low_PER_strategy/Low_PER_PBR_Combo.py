@@ -36,21 +36,19 @@ class MyWindow(QMainWindow, form_class):
         accounts_list = accounts.split(';')[0:accouns_num]
         self.comboBox.addItems(accounts_list)
 
+        self.checkBoxes = []
+
         self.lineEdit.textChanged.connect(self.code_changed)
         self.pushButton.clicked.connect(self.send_order)
         self.pushButton_2.clicked.connect(self.check_balance)
         self.spinBox_3.valueChanged.connect(self.interval_changed_timer2)
         # self.spinBox_4.valueChanged.connect(self.interval_changed_timer3)
+        self.checkBox_3.stateChanged.connect(self.toggleState)
 
         self.load_buy_sell_list()
 
     def timeout(self):
-        # market_start_time = QTime(9, 0, 0)
         current_time = QTime.currentTime()
-
-        # if current_time > market_start_time and self.trade_stocks_done is False:
-        #     self.trade_stocks()
-        #     self.trade_stocks_done = True
 
         text_time = current_time.toString("hh:mm:ss")
         time_msg = "현재시간: " + text_time
@@ -86,7 +84,9 @@ class MyWindow(QMainWindow, form_class):
         if current_time > market_start_time and self.trade_stocks_done is False:
             self.autotrade()
             self.trade_stocks_done = True
-
+    def toggleState(self, state):
+        for checkBox in self.checkBoxes:
+            checkBox.setCheckState(state)
 
     def autotrade(self):
         print("timeout3: "+QTime.currentTime().toString("hh:mm:ss"))
@@ -94,7 +94,7 @@ class MyWindow(QMainWindow, form_class):
         stock_row_count=self.tableWidget_2.rowCount()
         if stock_row_count > 0: #조회 종목 없을때 에러 방지, 테이블 기본 행 갯수는 0으로 셋팅(QtDesigner)
             for index in range(0,stock_row_count):
-                stock_keep[self.tableWidget_2.item(index,0).text()]=self.tableWidget_2.item(index,2).text()
+                stock_keep[self.tableWidget_2.item(index,1).text()]=self.tableWidget_2.item(index,3).text()
         
         criteria_list=moving_avg()
         
@@ -171,19 +171,25 @@ class MyWindow(QMainWindow, form_class):
         item_count = len(self.kiwoom.opw00018_output['multi'])
         self.tableWidget_2.setRowCount(item_count)
 
+        #checkBoxes reset default
+        self.checkBoxes = []
+
         for j in range(item_count):
-            row = self.kiwoom.opw00018_output['multi'][j]
-            for i in range(len(row)):
-                item = QTableWidgetItem(row[i])
+            column = self.kiwoom.opw00018_output['multi'][j]
+            chbox = QCheckBox()
+            self.checkBoxes.append(chbox)
+            self.tableWidget_2.setCellWidget(j,0,chbox)
+            for i in range(len(column)):
+                item = QTableWidgetItem(column[i])
                 item_refresh=QTableWidgetItem()    #QTableWidgetItem에 숫자로 입력할 때는 item_refresh처럼 빈 객체 만들고, setData 함수 이용 필요
                 if i<2:   # 테이블 데이터 정렬을 위해 숫자와 문자열 구분하여 입력
-                    self.tableWidget_2.setItem(j, i, item)
+                    self.tableWidget_2.setItem(j, i+1, item)
                 elif i >= 2 and i<6:
-                    item_refresh.setData(Qt.DisplayRole, int(str(row[i]).replace(',','')))  # '1,200'을 숫자로 만들려면 ','삭제해야 함
-                    self.tableWidget_2.setItem(j, i, item_refresh)
+                    item_refresh.setData(Qt.DisplayRole, int(str(column[i]).replace(',','')))  # '1,200'을 숫자로 만들려면 ','삭제해야 함
+                    self.tableWidget_2.setItem(j, i+1, item_refresh)
                 elif i==6:
-                    item_refresh.setData(Qt.DisplayRole, float(row[i]))
-                    self.tableWidget_2.setItem(j, i, item_refresh)
+                    item_refresh.setData(Qt.DisplayRole, float(column[i]))
+                    self.tableWidget_2.setItem(j, i+1, item_refresh)
                 item_refresh.setTextAlignment(Qt.AlignVCenter | Qt.AlignRight)
                 item.setTextAlignment(Qt.AlignVCenter | Qt.AlignRight)
         self.tableWidget_2.setSortingEnabled(True)

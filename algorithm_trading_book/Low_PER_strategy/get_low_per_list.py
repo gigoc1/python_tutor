@@ -10,7 +10,7 @@ def get_low_per_pbr(date):
 
     df2 = stock.get_market_fundamental(f"{date}", alternative=True, market="ALL")
     df2 = df2[['PER', 'PBR']]
-    df2 = df2.query('PER != 0').copy()
+    # df2 = df2.query('PER != 0').copy()
     df2 = df2.sort_values('PER') #수정
     df2['group'] = pd.cut(df2.reset_index().index, bins=3, labels=['저PER', '중PER', '고PER'])
 
@@ -28,11 +28,11 @@ def get_low_per_pbr(date):
     df = pd.merge(left=df3, right=t0, left_index=True, right_index=True)
 
     df = df.query('PBR != 0 and 거래량 != 0').copy()
-    # df.to_excel('Low_PER.xlsx')
     # df['수익률'] = df['종가'] / df['시가']
     # cond = (df['PER'] >= 2.5) & (df['PER'] <= 10)
     # top30 = df[cond].sort_values('PBR').groupby('group').head(30)
     top_list = df.sort_values('PBR').groupby('group').head(50)
+    # top_list.to_excel('Low_PER.xlsx')
     cond1=top_list['group']=="저PER"
     top_list=top_list[cond1]
     print(top_list)
@@ -40,4 +40,4 @@ def get_low_per_pbr(date):
 
     return top
 
-get_low_per_pbr(20221124)
+# get_low_per_pbr(20221124)

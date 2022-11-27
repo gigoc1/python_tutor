@@ -20,7 +20,6 @@ def make_code_ks(x):
     return '0'*(6-len(x))+x
 
 # jongmok_code = jongmok_code.apply(make_code_ks)
-jongmok_code = get_low_per_pbr(20221124)
 
 criteria_list={}
 
@@ -28,6 +27,7 @@ dt_now=datetime.date.today()
 dt_previous=dt_now+relativedelta(days=-40) #40일 전 날짜 계산
 
 def moving_avg():
+    jongmok_code = get_low_per_pbr(20221125)
     for code in jongmok_code:
         try:    # 신생 업체 상장 시에는 ParseError 발생하므로 에러 처리 필요
             gs = web.DataReader(code, "naver", dt_previous)
