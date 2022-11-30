@@ -41,6 +41,7 @@ class MyWindow(QMainWindow, form_class):
         self.lineEdit.textChanged.connect(self.code_changed)
         self.pushButton.clicked.connect(self.send_order)
         self.pushButton_2.clicked.connect(self.check_balance)
+        self.pushButton_3.clicked.connect(self.selected_send_order)
         self.spinBox_3.valueChanged.connect(self.interval_changed_timer2)
         # self.spinBox_4.valueChanged.connect(self.interval_changed_timer3)
         self.checkBox_3.stateChanged.connect(self.toggleState)
@@ -135,6 +136,28 @@ class MyWindow(QMainWindow, form_class):
 
         self.kiwoom.send_order("send_order_req", "0101", account, order_type_lookup[order_type], code, num, price, hoga_lookup[hoga], "")
 
+    def selected_send_order(self):
+        selected_codes = []
+        stock_row_count=self.tableWidget_2.rowCount()
+        if stock_row_count > 0:
+            for index in range(0,stock_row_count):
+                if self.tableWidget_2.cellWidget(index,0).checkState():
+                    selected_codes.append(self.tableWidget_2.item(index,2).text())
+        
+        order_type_lookup = {'신규매수': 1, '신규매도': 2, '매수취소': 3, '매도취소': 4}
+        hoga_lookup = {'지정가': "00", '시장가': "03"}
+
+        account = self.comboBox.currentText()
+        order_type = self.comboBox_2.currentText()
+        # code = self.lineEdit.text()
+        hoga = self.comboBox_3.currentText()
+        num = self.spinBox.value()
+        price = self.spinBox_2.value()
+
+        for code in selected_codes:
+            self.kiwoom.send_order("send_order_req", "0101", account, order_type_lookup[order_type], code, num, price, hoga_lookup[hoga], "")
+            time.sleep(0.2) #send_order 주문은 1초에 5회로 제한(키움 정책), 초과 시 에러 송출/주문 무시
+                    
     def check_balance(self):
         self.kiwoom.reset_opw00018_output()
         account_number = self.kiwoom.get_login_info("ACCNO")

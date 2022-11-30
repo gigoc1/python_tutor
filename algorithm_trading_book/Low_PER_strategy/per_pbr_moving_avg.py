@@ -27,7 +27,7 @@ dt_now=datetime.date.today()
 dt_previous=dt_now+relativedelta(days=-40) #40일 전 날짜 계산
 
 def moving_avg():
-    jongmok_code = get_low_per_pbr(20221125)
+    jongmok_code = get_low_per_pbr(20221130)
     for code in jongmok_code:
         try:    # 신생 업체 상장 시에는 ParseError 발생하므로 에러 처리 필요
             gs = web.DataReader(code, "naver", dt_previous)
@@ -44,3 +44,4 @@ def moving_avg():
             if sell_on or buy_on:
                 criteria_list[code]=[sell_on,buy_on, gs['Close'][-1]]
     return criteria_list
+# moving_avg()
