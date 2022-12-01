@@ -15,14 +15,14 @@ def get_low_per_pbr(date):
     df2['group'] = pd.cut(df2.reset_index().index, bins=3, labels=['저PER', '중PER', '고PER'])
 
     df3 = stock.get_market_ohlcv(f"{date}", alternative=True, market="ALL")
-    stock_code = stock.get_market_ticker_list(date, market="ALL")
+    # stock_code = stock.get_market_ticker_list(date, market="ALL")
+    stock_code = [item for item in df3.index]
     stock_name=[]
     for code in stock_code:
         name=stock.get_market_ticker_name(code)
         stock_name.append(name)
-    # print(stock_name)
+    df_stock_name = pd.DataFrame.from_records(stock_name)
     df3['종목명']=stock_name
-    # print(df3)
 
     t0 = pd.merge(left=df1, right=df2, left_index=True, right_index=True)
     df = pd.merge(left=df3, right=t0, left_index=True, right_index=True)
@@ -32,12 +32,10 @@ def get_low_per_pbr(date):
     # cond = (df['PER'] >= 2.5) & (df['PER'] <= 10)
     # top30 = df[cond].sort_values('PBR').groupby('group').head(30)
     top_list = df.sort_values('PBR').groupby('group').head(50)
-    # top_list.to_excel('Low_PER.xlsx')
+    top_list.to_excel('Low_PER.xlsx')
     cond1=top_list['group']=="저PER"
     top_list=top_list[cond1]
     print(top_list)
     top=[item for item in top_list.index]
 
     return top
-
-# get_low_per_pbr(20221124)

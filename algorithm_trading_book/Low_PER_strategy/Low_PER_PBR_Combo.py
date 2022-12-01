@@ -72,10 +72,10 @@ class MyWindow(QMainWindow, form_class):
         stock_row_count=self.tableWidget_2.rowCount()
         if self.checkBox_2.isChecked() and stock_row_count > 0: #조회 종목 없을때 에러 방지, 테이블 기본 행 갯수는 0으로 셋팅(QtDesigner)
             for index in range(0,stock_row_count):
-                code=str(self.tableWidget_2.item(index,1).text()).replace('A','')
-                num=self.tableWidget_2.item(index,2).text()
+                code=str(self.tableWidget_2.item(index,2).text()).replace('A','')
+                num=self.tableWidget_2.item(index,3).text()
                 price=0
-                if float(self.tableWidget_2.item(index,6).text()) >= self.doubleSpinBox_3.value(): # 20.0
+                if float(self.tableWidget_2.item(index,7).text()) >= self.doubleSpinBox_3.value(): # 20.0
                     self.kiwoom.send_order("send_order_req", "0101", account, 2, code, num, price, "03", "")  #매도
                     print("trade sell over earning rate")
                     time.sleep(0.2)
@@ -142,21 +142,18 @@ class MyWindow(QMainWindow, form_class):
         if stock_row_count > 0:
             for index in range(0,stock_row_count):
                 if self.tableWidget_2.cellWidget(index,0).checkState():
-                    selected_codes.append(self.tableWidget_2.item(index,2).text())
-        
-        order_type_lookup = {'신규매수': 1, '신규매도': 2, '매수취소': 3, '매도취소': 4}
-        hoga_lookup = {'지정가': "00", '시장가': "03"}
-
-        account = self.comboBox.currentText()
-        order_type = self.comboBox_2.currentText()
-        # code = self.lineEdit.text()
-        hoga = self.comboBox_3.currentText()
-        num = self.spinBox.value()
-        price = self.spinBox_2.value()
-
-        for code in selected_codes:
-            self.kiwoom.send_order("send_order_req", "0101", account, order_type_lookup[order_type], code, num, price, hoga_lookup[hoga], "")
-            time.sleep(0.2) #send_order 주문은 1초에 5회로 제한(키움 정책), 초과 시 에러 송출/주문 무시
+                    code = self.tableWidget_2.item(index,2).text().replace('A','')
+                    # code = self.lineEdit.text()
+                    order_type_lookup = {'신규매수': 1, '신규매도': 2, '매수취소': 3, '매도취소': 4}
+                    hoga_lookup = {'지정가': "00", '시장가': "03"}
+                    account = self.comboBox.currentText()
+                    order_type = '신규매도' # 매도로 주문 형태 고정
+                    hoga = '시장가' #  시장가로 고정
+                    num = self.tableWidget_2.item(index,3).text()
+                    price = self.spinBox_2.value()
+                    self.kiwoom.send_order("send_order_req", "0101", account, order_type_lookup[order_type], code, num, price, hoga_lookup[hoga], "")
+                    print('selcted code trade, code:'+code+', num: '+num)
+                    time.sleep(0.2) #send_order 주문은 1초에 5회로 제한(키움 정책), 초과 시 에러 송출/주문 무시
                     
     def check_balance(self):
         self.kiwoom.reset_opw00018_output()
