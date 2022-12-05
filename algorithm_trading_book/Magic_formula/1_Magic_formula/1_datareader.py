@@ -19,13 +19,14 @@ def get_corp_code():
 
 def get_closing_accounts_day(code):
     url = f"https://comp.fnguide.com/SVO2/ASP/SVD_main.asp?pGB=1&gicode=A{code}"
-    selector = "#compBody > div.section ul_corpinfo > div.corp_group1 > p > span.stxt stxt3"
+    # selector = "#compBody > div.section.ul_corpinfo > div.corp_group1 > p > span.stxt.stxt3"
+    selector = "#compBody > div.section.ul_corpinfo > div.corp_group1 > h2"
     resp = requests.get(url)
     html = resp.text 
 
     soup = BeautifulSoup(html, "html5lib")
     tags = soup.select(selector)
-    return tags[0].text
+    return tags[1].text
 
 
 def get_roic(code):
@@ -34,7 +35,7 @@ def get_roic(code):
         dfs = pd.read_html(url)
         df = dfs[0]
         df.set_index(df.columns[0], inplace=True)
-        roic = df.filter(regex="^2020").filter(like='ROIC', axis=0).iloc[0, 0]
+        roic = df.filter(regex="^2021").filter(like='ROIC', axis=0).iloc[0, 0] # 기존파일에서 연도 수정 2020 -> 2021
         roic = float(roic)
     except:
         roic = np.nan
@@ -45,9 +46,9 @@ def get_ev_ebitda(code):
     url = f"http://comp.fnguide.com/SVO2/ASP/SVD_Invest.asp?pGB=1&gicode=A{code}&cID=&MenuYn=Y&ReportGB=&NewMenuID=105&stkGb=701"
     try:
         dfs = pd.read_html(url)
-        df = dfs[1]
+        df = dfs[3] # 기존 파일에서 1 -> 3 수정
         df.set_index(df.columns[0], inplace=True)
-        ev_ebitda = df.filter(like="EV/EBITDA", axis=0).filter(regex="^2020").iloc[0, 0]
+        ev_ebitda = df.filter(like="EV/EBITDA", axis=0).filter(regex="^2021").iloc[0, 0] # 기존 파일에서 연도 수정 2020 -> 2021
         ev_ebitda = float(ev_ebitda)
     except:
         ev_ebitda = np.nan
@@ -64,6 +65,7 @@ if __name__ == "__main__":
         acode = s['cd']
         code = acode[1:]
         name = s['nm']
+        # print('code: '+code+', name: '+name)
 
         day = get_closing_accounts_day(code)
         roic = get_roic(code) 

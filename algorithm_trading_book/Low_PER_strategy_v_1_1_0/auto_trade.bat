@@ -1,0 +1,1 @@
+"C:\Users\KDK\AppData\Local\Programs\Python\Python38-32\python.exe" "D:\study\Python_study\algorithm_trading_book\Low_PER_strategy_v_1_1_0\Low_PER_PBR_Combo_1_1_0.py"

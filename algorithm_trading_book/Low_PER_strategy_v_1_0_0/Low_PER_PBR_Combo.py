@@ -79,7 +79,7 @@ class MyWindow(QMainWindow, form_class):
                     self.kiwoom.send_order("send_order_req", "0101", account, 2, code, num, price, "03", "")  #매도
                     print("trade sell over earning rate")
                     time.sleep(0.2)
-        market_start_time = QTime(15, 20, 0)
+        market_start_time = QTime(15, 21, 0) # 동시호가 진입 1분 후 부터 자동매매 시작(종가 미산정 오류 방지)
         current_time = QTime.currentTime()
 
         if current_time > market_start_time and self.trade_stocks_done is False:
@@ -180,6 +180,9 @@ class MyWindow(QMainWindow, form_class):
         for i in range(1, 6):
             try:   # "IndexError: list index out of range" 발생하여 처리
                 item = QTableWidgetItem(self.kiwoom.opw00018_output['single'][i - 1])
+                if i ==4:   # 실 계좌에서 수익율은 가상계좌 대비 1/100
+                    interest_imsi=float(item.text())/100
+                    item.setText(str(interest_imsi))
                 item.setTextAlignment(Qt.AlignVCenter | Qt.AlignRight)
                 self.tableWidget.setItem(0, i, item)
             except IndexError as e:
@@ -208,7 +211,7 @@ class MyWindow(QMainWindow, form_class):
                     item_refresh.setData(Qt.DisplayRole, int(str(column[i]).replace(',','')))  # '1,200'을 숫자로 만들려면 ','삭제해야 함
                     self.tableWidget_2.setItem(j, i+1, item_refresh)
                 elif i==6:
-                    item_refresh.setData(Qt.DisplayRole, float(column[i]))
+                    item_refresh.setData(Qt.DisplayRole, float(column[i])/100) # 실 계좌에서 수익율은 가상계좌 대비 1/100
                     self.tableWidget_2.setItem(j, i+1, item_refresh)
                 item_refresh.setTextAlignment(Qt.AlignVCenter | Qt.AlignRight)
                 item.setTextAlignment(Qt.AlignVCenter | Qt.AlignRight)
