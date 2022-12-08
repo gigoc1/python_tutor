@@ -85,6 +85,10 @@ class MyWindow(QMainWindow, form_class):
         if current_time > market_start_time and self.trade_stocks_done is False:
             self.autotrade()
             self.trade_stocks_done = True
+
+        if current_time > QTime(16, 10, 0):
+            sys.exit()
+
     def toggleState(self, state):
         for checkBox in self.checkBoxes:
             checkBox.setCheckState(state)
