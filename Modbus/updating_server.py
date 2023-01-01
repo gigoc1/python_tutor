@@ -76,7 +76,7 @@ def setup_updating_server(args):
         di=datablock, co=datablock, hr=datablock, ir=datablock, unit=1
     )
     args.context = ModbusServerContext(slaves=context, single=True)
-    return setup_server(args)
+    return setup_server(args)  #레지스터 초기값은 'setup_server'함수 내부에서 결정
 
 
 async def run_updating_server(args):
