@@ -16,7 +16,7 @@ if(tcp ==True):
     client = ModbusClient('192.168.137.63',5020)
     client.connect()
 
-    result = client.read_holding_registers(0x00,1,0)
+    result = client.read_holding_registers(0x10,1,0)
     print(result.registers)
     # client.write_register(0x10,00,1)
     client.close()

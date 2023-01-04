@@ -79,7 +79,7 @@ class MyWindow(QMainWindow, form_class):
                     self.kiwoom.send_order("send_order_req", "0101", account, 2, code, num, price, "03", "")  #매도
                     print("trade sell over earning rate")
                     time.sleep(0.2)
-        market_start_time = QTime(15, 21, 0) # 동시호가 진입 1분 후 부터 자동매매 시작(종가 미산정 오류 방지)
+        market_start_time = QTime(15, 18, 0) # 동시호가 진입 2분 전에 자동매매 시작(불공정 거래 방지)
         current_time = QTime.currentTime()
 
         if current_time > market_start_time and self.trade_stocks_done is False:
